@@ -1,0 +1,30 @@
+machine:
+    path:     /
+    defaults: { _controller: "MTConnectBundle:Machine:index" }
+
+machine_show:
+    path:     /{id}/show
+    defaults: { _controller: "MTConnectBundle:Machine:show" }
+
+machine_new:
+    path:     /new
+    defaults: { _controller: "MTConnectBundle:Machine:new" }
+
+machine_create:
+    path:     /create
+    defaults: { _controller: "MTConnectBundle:Machine:create" }
+    methods:  POST
+
+machine_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MTConnectBundle:Machine:edit" }
+
+machine_update:
+    path:     /{id}/update
+    defaults: { _controller: "MTConnectBundle:Machine:update" }
+    methods:  [POST, PUT]
+
+machine_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MTConnectBundle:Machine:delete" }
+    methods:  [POST, DELETE]

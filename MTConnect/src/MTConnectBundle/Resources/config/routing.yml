@@ -1,0 +1,28 @@
+mt_connect_coleta:
+    resource: "@MTConnectBundle/Resources/config/routing/coleta.yml"
+    prefix:   /coleta
+
+mt_connect_dataitem:
+    resource: "@MTConnectBundle/Resources/config/routing/dataitem.yml"
+    prefix:   /dataitem
+
+mt_connect_machine:
+    resource: "@MTConnectBundle/Resources/config/routing/machine.yml"
+    prefix:   /machine
+
+index:
+    path:     /
+    defaults: { _controller: MTConnectBundle:Lab:index }
+
+record:
+    path:     /record
+    defaults: { _controller: MTConnectBundle:Lab:record }
+
+config:
+    path:     /config
+    defaults: { _controller: MTConnectBundle:Lab:config }
+
+parse:
+    path:     /parse
+    defaults: { _controller: MTConnectBundle:ProbeParser:parse }
+    methods:  [POST, PUT]

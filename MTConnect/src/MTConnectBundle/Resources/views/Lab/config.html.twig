@@ -1,0 +1,50 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}MTConnectBundle:Lab:index{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">Select probe file</div>
+            <div class="panel-body">
+                <h4>Input Groups</h4>
+                <form action="{{ path('parse') }}" method="post" >
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Browse&hellip; <input name='probe' id="probe" type="file" multiple>
+                        </span>
+                    </span>
+                    <input type="text" class="form-control" readonly>
+                </div>
+                <span class="help-block">
+                    Try selecting one or more files and watch the feedback
+                </span>
+                    <button type="submit" name="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+
+        $(document).ready( function() {
+            $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+                console.log(numFiles);
+                console.log(label);
+            });
+        });
+
+        $(document).on('change', '.btn-file :file', function() {
+            var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [numFiles, label]);
+        });
+
+    </script>
+{% endblock %}

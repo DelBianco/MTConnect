@@ -1,0 +1,38 @@
+coleta:
+    path:     /
+    defaults: { _controller: "MTConnectBundle:Coleta:index" }
+
+coleta_config:
+    path:     /{id}/config
+    defaults: { _controller: "MTConnectBundle:Coleta:configColeta" }
+
+coleta_select:
+    path:     /{id}/select
+    defaults: { _controller: "MTConnectBundle:Coleta:select" }
+
+coleta_show:
+    path:     /{id}/show
+    defaults: { _controller: "MTConnectBundle:Coleta:show" }
+
+coleta_new:
+    path:     /new
+    defaults: { _controller: "MTConnectBundle:Coleta:new" }
+
+coleta_create:
+    path:     /create
+    defaults: { _controller: "MTConnectBundle:Coleta:create" }
+    methods:  POST
+
+coleta_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MTConnectBundle:Coleta:edit" }
+
+coleta_update:
+    path:     /{id}/update
+    defaults: { _controller: "MTConnectBundle:Coleta:update" }
+    methods:  [POST, PUT]
+
+coleta_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MTConnectBundle:Coleta:delete" }
+    methods:  [POST, DELETE]

@@ -1,0 +1,3 @@
+mt_connect:
+    resource: "@MTConnectBundle/Resources/config/routing.yml"
+    prefix:   /

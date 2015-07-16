@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Coleta list</h1>
+    <table class="records_list">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Dataitems</th>
+                <th>Numdecoletas</th>
+                <th>Datadecriacao</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('coleta_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nome }}</td>
+                <td>{{ entity.dataItems | join }}</td>
+                <td>{{ entity.numDeColetas }}</td>
+                <td>{% if entity.dataDeCriacao %}{{ entity.dataDeCriacao|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('coleta_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('coleta_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <ul>
+        <li>
+            <a href="{{ path('coleta_new') }}">
+                Create a new entry
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

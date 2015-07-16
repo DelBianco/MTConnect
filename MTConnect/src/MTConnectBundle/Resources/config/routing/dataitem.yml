@@ -1,0 +1,30 @@
+dataitem:
+    path:     /
+    defaults: { _controller: "MTConnectBundle:DataItem:index" }
+
+dataitem_show:
+    path:     /{id}/show
+    defaults: { _controller: "MTConnectBundle:DataItem:show" }
+
+dataitem_new:
+    path:     /new
+    defaults: { _controller: "MTConnectBundle:DataItem:new" }
+
+dataitem_create:
+    path:     /create
+    defaults: { _controller: "MTConnectBundle:DataItem:create" }
+    methods:  POST
+
+dataitem_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "MTConnectBundle:DataItem:edit" }
+
+dataitem_update:
+    path:     /{id}/update
+    defaults: { _controller: "MTConnectBundle:DataItem:update" }
+    methods:  [POST, PUT]
+
+dataitem_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "MTConnectBundle:DataItem:delete" }
+    methods:  [POST, DELETE]
