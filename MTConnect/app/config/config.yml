@@ -106,3 +106,7 @@ braincrafted_bootstrap:
         variables_file: ~
         bootstrap_output: %kernel.root_dir%/Resources/less/bootstrap.less
         bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
+
+framework:
+    translator: { fallback: %locale% }
+    default_locale:  "%locale%"

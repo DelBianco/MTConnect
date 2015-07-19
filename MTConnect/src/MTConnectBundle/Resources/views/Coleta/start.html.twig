@@ -1,0 +1,53 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <div class="row">
+
+        <form role="form" id="prev" action="{{ path('coleta_new',{'id':id}) }}">
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-warning"><i class="fa fa-arrow-left fa-fw"></i>&nbsp; Voltar</button>
+            </div>
+        </form>
+        <form role="form" id="next" action="{{ path('coleta_select',{'id':id}) }}">
+            <div class="col-sm-6">
+                <button type="submit" class="btn btn-success pull-right">Prosseguir &nbsp;<i class="fa fa-arrow-right fa-fw"></i></button>
+            </div>
+        </form>
+        <div class="clearfix"></div>
+        <hr>
+        <div class="well">
+            Verifique se os dados abaixo condizem com os dados desejados para a coleta
+        </div>
+            <div class="clearfix"></div>
+
+    {% set categoryColor = {'SAMPLE' : 'info', 'CONDITION' : 'default', 'EVENT' : 'success', } %}
+    {% for key,parsed in parsedProbe %}
+        {% set machine = parsed.Machine %}
+        <div class="page-header">
+            {{ machine.name }}
+        </div>
+            {% set dataItems = parsed.DataItems %}
+
+            {% for dI in dataItems %}
+            <div class="col-sm-4 col-md-3">
+                {% set checked = '' %}
+                <div class="panel panel-{{ categoryColor[dI.category] }}">
+
+                    <div class="panel-heading">
+                        {{ dI.name }}
+                    </div>
+                    <ul class="list-group">
+
+                        <li class="list-group-item">
+                        Type: {{ dI.type }}
+                        </li>
+                        <li class="list-group-item">
+                        Category: {{ dI.category }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+    {% endfor %}
+    </div>
+{% endblock %}

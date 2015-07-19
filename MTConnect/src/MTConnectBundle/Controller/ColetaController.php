@@ -245,7 +245,46 @@ class ColetaController extends Controller
         ;
     }
 
+    /**
+     * @param $id
+     *
+     * @var $machineExists Machine
+     * @var $machineExists Machine
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     *
+     */
     public function selectAction($id){
+
+        $report = $this->persistProbe($id);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $machines = $em->getRepository('MTConnectBundle:Machine')->findAll();
+        $dataItems = $em->getRepository('MTConnectBundle:DataItem')->findAll();
+        if (!$machines) {
+            throw $this->createNotFoundException('Unable to find any Machine stored');
+        }
+        if (!$dataItems) {
+            throw $this->createNotFoundException('Unable to find any DataItems stored');
+        }
+
+        return $this->render('MTConnectBundle:Coleta:select.html.twig', array(
+            'newMachines'    => $report['Machines'],
+            'oldMachines'    => $machines,
+            'newDataItems'   => $report['DataItems'],
+            'dataItems'   => $dataItems,
+        ));
+    }
+
+    /**
+     * @param integer $id  -> corresponde ao id da coleta em questao
+     *
+     * Pega o probe carregado para a coleta e faz a persistencia no banco
+     *
+     */
+    private function persistProbe($id){
+
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MTConnectBundle:Coleta')->find($id);
@@ -255,11 +294,54 @@ class ColetaController extends Controller
         }
 
         $parsedData = $this->parseProbe($entity->getProbe());
+        // array( $machine->getName() => array('Machine' => $machine , 'DataItems' => $arrayDataItems) ) );
+        $report['DataItems'] = array();
+        $report['Machines'] = array();
 
-        foreach($parsedData as $machine => $dataItem)
+        foreach($parsedData as $machine => $array){
 
+            $machineExists = $this->isNewMachine($array['Machine']);
 
-        return $this->render('MTConnectBundle:Coleta:select.html.twig');
+            if($machineExists == null){
+                $report['Machines'][] = $array['Machine'];
+                $em->flush();
+                $em->persist($array['Machine']);
+            }
+
+            $machineExists = $this->isNewMachine($array['Machine']);
+            $report['DataItems'] = array();
+            foreach($array['DataItems'] as $dI){
+                $dI->setMachine($machineExists);
+                if($this->isNewDataItem($dI) == null){
+                    $em->persist($dI);
+                    $report['DataItems'][] = $dI;
+                }
+                $em->flush();
+            }
+        }
+
+        return $report;
+    }
+
+    /**
+     * @param $machine Machine
+     *
+     * verifica se uma determinada maquina já não está inserida no banco de dados
+     * @return Machine
+     */
+
+    private function isNewMachine($machine){
+        $em = $this->getDoctrine()->getManager();
+        $criteria = array('name' => $machine->getName(),'uUID' => $machine->getUUID());
+
+        return $em->getRepository('MTConnectBundle:Machine')->findOneBy($criteria);
+    }
+
+    private function isNewDataItem($dI){
+        $em = $this->getDoctrine()->getManager();
+        $criteria = array('machine' => $dI->getMachine(), 'name' => $dI->getName(),'type' => $dI->getType(), 'category'=> $dI->getCategory());
+
+        return $em->getRepository('MTConnectBundle:DataItem')->findOneBy($criteria);
     }
 
     private function parseProbe($probeXml){

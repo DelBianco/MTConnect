@@ -38,7 +38,12 @@
     "jquery/jquery":  "1.11.*",
     "symfony/finder": "^2.7",
     "symfony/dom-crawler": "^2.7",
-    "components/font-awesome": "^4.3"
+    "components/font-awesome": "^4.3",
+    "friendsofsymfony/jsrouting-bundle": "^1.5",
+    "datatables/datatables": "1.10.7",
+    "moment/moment": "2.10.2",
+    "friendsofsymfony/jsrouting-bundle": "@stable",
+	"sg/datatablesbundle": "dev-master"
   },
   "require-dev": {
     "sensio/generator-bundle": "~2.3"

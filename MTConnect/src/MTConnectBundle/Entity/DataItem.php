@@ -31,7 +31,7 @@ class DataItem
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=255)
+     * @ORM\Column(name="Name", type="string", length=255, nullable=true)
      */
     private $name;
 
@@ -129,7 +129,7 @@ class DataItem
     }
 
     /**
-     * @return mixed
+     * @return Machine
      */
     public function getMachine()
     {
@@ -137,7 +137,7 @@ class DataItem
     }
 
     /**
-     * @param mixed $machine
+     * @param Machine $machine
      */
     public function setMachine($machine)
     {
