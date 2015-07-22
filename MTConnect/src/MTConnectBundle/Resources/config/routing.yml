@@ -10,6 +10,11 @@ mt_connect_machine:
     resource: "@MTConnectBundle/Resources/config/routing/machine.yml"
     prefix:   /machine
 
+mt_connect_dataset:
+    resource: "@MTConnectBundle/Resources/config/routing/dataset.yml"
+    prefix:   /dataset
+
+
 index:
     path:     /
     defaults: { _controller: MTConnectBundle:Lab:index }

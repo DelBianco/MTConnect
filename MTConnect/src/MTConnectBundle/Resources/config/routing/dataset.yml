@@ -1,0 +1,13 @@
+dataset:
+    path:     /
+    defaults: { _controller: "MTConnectBundle:DataSet:index" }
+
+dataset_start:
+  pattern:  /start
+  defaults: { _controller: "MTConnectBundle:DataSet:start" }
+
+
+dataset_parseXML:
+  pattern:  /parseXML
+  defaults: { _controller: "MTConnectBundle:DataSet:parseXML" }
+

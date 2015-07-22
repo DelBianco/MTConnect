@@ -1,0 +1,27 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}MTConnect DataSet{% endblock %}
+
+{% block body %}
+    <button id='testCon' class="btn btn-success fa fa-play fa-3x" ></button>
+
+    <script>
+        $("#testCon").click(function(){
+            $.ajax({url: "{{ path('dataset_start') }}", success: function(result){
+                connection = jQuery.parseJSON(result);
+                parse();
+            }});
+        });
+
+        function parse(){
+            $.ajax({url: "{{ path('dataset_parseXML') }}", success: function(result){
+                connection = jQuery.parseJSON(result);
+                alert(connection.lastSequence);
+            }});
+        }
+
+
+    </script>
+
+{% endblock %}
+

@@ -1,4 +1,4 @@
-machine:
+dataset:
     path:     /
     defaults: { _controller: "MTConnectBundle:Machine:index" }
 
