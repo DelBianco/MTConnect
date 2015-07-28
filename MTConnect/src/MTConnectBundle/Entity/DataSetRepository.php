@@ -12,4 +12,38 @@ use Doctrine\ORM\EntityRepository;
  */
 class DataSetRepository extends EntityRepository
 {
+    public function findLastSequenceFlushed(){
+        $em = $this->getEntityManager();
+        $highest_seq = $em->createQueryBuilder()
+            ->select('MAX(ds.sequence)')
+            ->from('MTConnectBundle:DataSet', 'ds')
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $highest_seq;
+    }
+
+    public function findPreview($coleta,$limit){
+        $em = $this->getEntityManager();
+        $highest_seq = $em->createQueryBuilder()
+            ->select('ds')
+            ->from('MTConnectBundle:DataSet', 'ds')
+            ->where('ds.coleta ='.$coleta)
+            ->orderBy('ds.timestamp','DESC')
+            ->setMaxResults( $limit )
+            ->getQuery()
+            ->getResult();
+        return $highest_seq;
+    }
+
+    public function findByColeta($coleta){
+        $em = $this->getEntityManager();
+        $result = $em->createQueryBuilder()
+            ->select('ds')
+            ->from('MTConnectBundle:DataSet', 'ds')
+            ->where('ds.coleta ='.$coleta)
+            ->orderBy('ds.timestamp','DESC')
+            ->getQuery()
+            ->getResult();
+        return $result;
+    }
 }

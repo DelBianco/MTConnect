@@ -12,46 +12,38 @@
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet" media="screen">
     <link href="{{ asset('css/fontawesome.css') }}" rel="stylesheet" media="screen">
     <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+    <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+    <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ asset('js/jquery.js') }}"></script>
     <!-- Include all JavaScripts, compiled by Assetic -->
 
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">MTConnect</a>
+            <a class="navbar-brand" href="#">Lapras - Web Lab</a>
         </div>
-    </div>
-</nav>
 
-<div class="container-fluid">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{  path('index') }}">Inicio <span class="sr-only">(current)</span></a></li>
+                <li><a href="{{ path('coleta') }}">Coleta</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container">
     <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
-                <li>
-                    <a href="#">Coleta</a>
-                </li>
-                <li>
-                    <a href="#">Quem somos</a>
-                </li>
-                <li>
-                    <a href="#">Apoio</a>
-                </li>
-            </ul>
-            <ul class="nav nav-sidebar">
-                <li><a href="">Cadastre-se</a></li>
-                <li><a href="">Login</a></li>
-            </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="main">
             {% block body %}{% endblock %}
         </div><!-- ./main -->
     </div><!-- ./row -->
@@ -60,6 +52,7 @@
 <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
 {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 <script src="{{ asset('js/bootstrap.js') }}"></script>
+
 </body>
 </html>
 

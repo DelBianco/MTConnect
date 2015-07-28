@@ -1,7 +1,19 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}MTConnectBundle:Lab:index{% endblock %}
+{% block title %}LAPRAS - Web Lab{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Lab:index page</h1>
+    <div class="jumbotron">
+        <h1>LAPRAS - Web Lab</h1>
+        <p>
+            Este Sistema Web foi desenvolvido com o objetivo de realizar a captura, exibição e exportação dos dados gerados pelas máquinas do laboratório.
+            Tem como base o padrão MTConnect que utiliza de adaptadores para cada modelo de máquina ou sensor externo ao controlador, e os organiza em um padrão universal de dados.
+            esses dados são disponibilizados por um agente de serviço na porta de saida de nosso servidor. As máquinas também estão conectadas e esse servidor
+            e com seus devidos adaptadores se comunicando para que padrão funcione.
+        </p>
+        <a class="btn btn-primary btn-lg" href="http://www.abcm.org.br/symposium-series/SSM_Vol5/Section_V_Intelligent_and_Distributed_Manufacturing_Systems/14811.pdf" role="button">Sobre o Background</a>
+        <a class="btn btn-primary btn-lg" href="http://www.mtconnect.org/" role="button">Sobre MTConnect</a>
+        <p>
+    </div>
+
 {% endblock %}

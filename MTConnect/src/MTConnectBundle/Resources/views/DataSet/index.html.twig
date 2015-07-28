@@ -1,25 +1,114 @@
-{% extends "::base.html.twig" %}
-
-{% block title %}MTConnect DataSet{% endblock %}
+{% extends '::base.html.twig' %}
 
 {% block body %}
-    <button id='testCon' class="btn btn-success fa fa-play fa-3x" ></button>
-
+    <div class="page-header">
+        <h1>{{ coleta.nome }} <small><i id='cog-working' class="fa fa-cog fa-2x"></i></small></h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-3">
+            <div class="row">
+                <ul class="list-group col-xs-12">
+                    <li class="list-group-item"><small><b>MTConnect Version:</b>    {{ version }}</small></li>
+                    <li class="list-group-item"><small><b>Instance ID:</b>          {{ instanceId }}</small></li>
+                    <li class="list-group-item"><small><b>Sender:</b>               {{ sender }}</small></li>
+                    <li class="list-group-item"><small><b>BufferSize:</b>           {{ bufferSize }}</small></li>
+                    <li class="list-group-item"><small><b>Creation Time:</b><span id="creationTime"> {{ creationTime }}</span></small></li>
+                    <li class="list-group-item"><small><b>First Sequence:</b><span id="firstSeq"> {{ firstSequence }}</span></small></li>
+                    <li class="list-group-item"><small><b>Next Sequence:</b><span id="nextSeq"> {{ nextSequence }}</span></small></li>
+                    <li class="list-group-item"><small><b>Last Sequence:</b><span id="lastSeq"> {{ lastSequence }}</span></small></li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 btn-block ">
+                    <button id='play' class="btn btn-block btn-success" >Iniciar Coleta <i class="fa fa-play fa-fw"></i></button>
+                </div>
+                <div class="col-xs-6 btn-block ">
+                    <button id='stop' class="btn btn-block btn-warning" disabled="disabled">Parar Coleta <i class="fa fa-pause fa-fw"></i></button>
+                </div>
+                <div class="col-xs-6 btn-block ">
+                    <a href="{{ path('dataset_analize', { 'coleta_id': coleta.id}) }}"><button id='analize' class="btn btn-block btn-primary" >Analizar dados <i class="fa fa-arrow-right fa-fw"></i></button></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-9">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    Selecione o Tipo de Dado a ser Coletado:
+                </div>
+                <div class="row input-group">
+                    <form id="selectedDataItems">
+                    {% for res in result %}
+                    <div class="col-md-4 col-sm-6 col-xs-12" style="font-size: small">
+                        <span class="input-group-addon">
+                            <input class="checkbox" type="checkbox" name="{{ res.machineName }}[]" value="{{ res.dataItemType }}" checked >
+                        </span>
+                        <div class="control-label form-control" style="font-size: smaller ">{{ res.dataItemType }} <small>{{ res.machineName }}</small></div>
+                    </div>
+                    {% endfor %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
-        $("#testCon").click(function(){
-            $.ajax({url: "{{ path('dataset_start') }}", success: function(result){
-                connection = jQuery.parseJSON(result);
-                parse();
-            }});
+        var lastSeq = '{{ lastSequence }}';
+        var firstSeq = '{{ lastSequence }}';
+        var nextSeq = '{{ lastSequence }}';
+        var creationTime = '{{ creationTime }}';
+        var play;
+        var timer = 500;
+
+        var mtcPath = 'http://localhost:5000/current'
+
+        stop();
+
+        $("#play").click(function(){
+            $("#cog-working").addClass('fa-spin');
+            $("#play").prop( "disabled", true );
+            $("#stop").prop( "disabled", false );
+            $("#analize").prop( "disabled", true );
+
+            play = setInterval(function() { start() }, timer);
+
+            // pode ser melhorado passando um sample para ser parseado esse sample tem como controle as sequências
+            // assim pode-se obter os dados em quase tempo real
+            function start()
+            {
+                $.ajax(
+                        {
+                            type: "POST",
+                            url: "{{ path('dataset_parseXML', { 'coleta_id': coleta.id}) }}",
+                            data: {
+                                selected: $('#selectedDataItems').serialize()
+                            },
+                            success: function(result){
+                                res = jQuery.parseJSON(result);
+                                creationTime =  res.creationTime;
+                                firstSeq = res.firstSequence;
+                                lastSeq = res.lastSequence;
+                                nextSeq = res.nextSequence
+                            }
+                        }
+                );
+
+                $("#firstSeq").text(firstSeq);
+                $("#lastSeq").text(lastSeq);
+                $("#nextSeq").text( nextSeq);
+                $("#creationTime").text( creationTime);
+
+            }
+        });
+        $("#stop").click(function(){
+            stop();
+            clearInterval(play);
         });
 
-        function parse(){
-            $.ajax({url: "{{ path('dataset_parseXML') }}", success: function(result){
-                connection = jQuery.parseJSON(result);
-                alert(connection.lastSequence);
-            }});
+        function stop(){
+            $("#play").prop( "disabled", false );
+            $("#analize").prop( "disabled", false );
+            $("#stop").prop( "disabled", true );
+            $("#cog-working").removeClass('fa-spin');
         }
-
 
     </script>
 

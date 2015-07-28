@@ -16,7 +16,6 @@ class ColetaType extends AbstractType
     {
         $builder
             ->add('nome')
-            ->add('dataItems')
             ->add('probe')
             ->add('numDeColetas')
             ->add('dataDeCriacao')

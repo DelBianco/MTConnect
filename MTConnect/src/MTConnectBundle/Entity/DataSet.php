@@ -3,6 +3,8 @@
 namespace MTConnectBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\ManyToOne as ManyToOne;
+use Doctrine\ORM\Mapping\JoinColumn as JoinColumn;
 
 /**
  * DataSet
@@ -22,10 +24,9 @@ class DataSet
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="coleta", type="integer")
-     */
+     * @ManyToOne(targetEntity="Coleta")
+     * @(name="coleta", referencedColumnName="id")
+     **/
     private $coleta;
 
     /**
@@ -35,11 +36,18 @@ class DataSet
      */
     private $sequence;
 
+
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="dataItem", type="integer")
+     * @ORM\Column(name="dataItem_name", type="string")
      */
+    private $dataItem_name;
+
+    /**
+     * @ManyToOne(targetEntity="DataItem")
+     * @(name="dataItem", referencedColumnName="id", nullable=true)
+     **/
     private $dataItem;
 
     /**
@@ -68,9 +76,9 @@ class DataSet
     }
 
     /**
-     * Set coleta
+     * Set Coleta
      *
-     * @param integer $coleta
+     * @param Coleta $coleta
      * @return DataSet
      */
     public function setColeta($coleta)
@@ -83,7 +91,7 @@ class DataSet
     /**
      * Get coleta
      *
-     * @return integer 
+     * @return Coleta
      */
     public function getColeta()
     {
@@ -174,4 +182,22 @@ class DataSet
     {
         $this->sequence = $sequence;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDataItemName()
+    {
+        return $this->dataItem_name;
+    }
+
+    /**
+     * @param mixed $dataItem_name
+     */
+    public function setDataItemName($dataItem_name)
+    {
+        $this->dataItem_name = $dataItem_name;
+    }
+
+
 }

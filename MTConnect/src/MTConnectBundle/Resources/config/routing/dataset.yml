@@ -1,13 +1,24 @@
 dataset:
-    path:     /
+    path:     /{coleta_id}
     defaults: { _controller: "MTConnectBundle:DataSet:index" }
 
 dataset_start:
-  pattern:  /start
+  pattern:  /{coleta_id}/start
   defaults: { _controller: "MTConnectBundle:DataSet:start" }
 
+dataset_previewTable:
+    pattern:  /{coleta_id}/preview
+    defaults: { _controller: "MTConnectBundle:DataSet:previewTable" }
 
 dataset_parseXML:
-  pattern:  /parseXML
+  pattern:  /{coleta_id}/parseXML
   defaults: { _controller: "MTConnectBundle:DataSet:parseXML" }
+  methods: [POST,GET]
 
+dataset_storeXMLData:
+  pattern:  /{coleta_id}/storeXMLData
+  defaults: { _controller: "MTConnectBundle:DataSet:storeXMLData" }
+
+dataset_analize:
+  pattern:  /{coleta_id}/analize
+  defaults: { _controller: "MTConnectBundle:DataSet:analize" }

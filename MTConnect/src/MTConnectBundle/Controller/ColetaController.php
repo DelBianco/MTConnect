@@ -20,6 +20,7 @@ use MTConnectBundle\Form\ColetaType;
  */
 class ColetaController extends Controller
 {
+    public $probe = 'http://localhost:5000';
 
     /**
      * Lists all Coleta entities.
@@ -85,6 +86,12 @@ class ColetaController extends Controller
     public function newAction()
     {
         $entity = new Coleta();
+
+        $entity->setDataDeCriacao(new \DateTime());
+        $entity->setNumDeColetas(0);
+        $xmlDoc = new DOMDocument();
+        $xmlDoc->load($this->probe);
+        $entity->setProbe($xmlDoc->saveXML());
         $form   = $this->createCreateForm($entity);
 
         return $this->render('MTConnectBundle:Coleta:new.html.twig', array(
@@ -262,6 +269,7 @@ class ColetaController extends Controller
 
         $machines = $em->getRepository('MTConnectBundle:Machine')->findAll();
         $dataItems = $em->getRepository('MTConnectBundle:DataItem')->findAll();
+
         if (!$machines) {
             throw $this->createNotFoundException('Unable to find any Machine stored');
         }
@@ -299,15 +307,12 @@ class ColetaController extends Controller
         $report['Machines'] = array();
 
         foreach($parsedData as $machine => $array){
-
             $machineExists = $this->isNewMachine($array['Machine']);
-
             if($machineExists == null){
                 $report['Machines'][] = $array['Machine'];
-                $em->flush();
                 $em->persist($array['Machine']);
+                $em->flush();
             }
-
             $machineExists = $this->isNewMachine($array['Machine']);
             $report['DataItems'] = array();
             foreach($array['DataItems'] as $dI){

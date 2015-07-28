@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new MTConnectBundle\MTConnectBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new MEF\SocketBundle\MEFSocketBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -110,3 +110,7 @@ braincrafted_bootstrap:
 framework:
     translator: { fallback: %locale% }
     default_locale:  "%locale%"
+
+mef_socket:
+    port: 6000
+    host: 127.0.0.1

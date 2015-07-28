@@ -1,0 +1,13 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <div class="page-header">
+        <h1>{{ coleta.nome }} <small><i class="fa fa-bar-chart fa-2x"></i></small></h1>
+    </div>
+    <ul>
+    {% for d in data %}
+        <li>{{  d.value }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+

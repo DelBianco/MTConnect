@@ -43,7 +43,9 @@
     "datatables/datatables": "1.10.7",
     "moment/moment": "2.10.2",
     "friendsofsymfony/jsrouting-bundle": "@stable",
-	"sg/datatablesbundle": "dev-master"
+	"mef/socket-bundle": "dev-master",
+	"sg/datatablesbundle": "dev-master",
+    "symfony/filesystem": "^2.7"
   },
   "require-dev": {
     "sensio/generator-bundle": "~2.3"

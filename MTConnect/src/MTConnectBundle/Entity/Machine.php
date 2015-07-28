@@ -91,6 +91,4 @@ class Machine
     {
         return $this->uUID;
     }
-
-
 }

@@ -1,45 +1,41 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Coleta list</h1>
-    <table class="records_list">
+    <div class="page-header">
+        <h1>Coleta</h1>
+    </div>
+    <div class="well">
+        Aqui Você pode criar Coletas de dados, crie uma coleta para separar seus dados dos dados dos outros usuários do laboratório
+        cada coleta pode ser reaberta e utilizada para armazenar novos dados utilize nomes auto-descritivos para o nome das coletas.
+    </div>
+    <a class='btn btn-success' href="{{ path('coleta_new') }}">
+        Nova Coleta <i class="fa fa-plus fa-fw"></i>
+    </a>
+    <div class="clearfix"><br></div>
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nome</th>
-                <th>Dataitems</th>
-                <th>Numdecoletas</th>
-                <th>Datadecriacao</th>
-                <th>Actions</th>
+                <th>Data de criacao</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('coleta_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.nome }}</td>
-                <td>{{ entity.dataItems | join }}</td>
-                <td>{{ entity.numDeColetas }}</td>
-                <td>{% if entity.dataDeCriacao %}{{ entity.dataDeCriacao|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td><a href="{{ path('dataset', { 'coleta_id': entity.id }) }}" data-toggle="tooltip" data-placement="top" title="Ir para a Coleta"><i class="fa fa-sign-in fa-fw"></i> {{ entity.nome }}</a></td>
+                <td>{% if entity.dataDeCriacao %}{{ entity.dataDeCriacao|date('F j, Y, g:i a') }}{% endif %}</td>
                 <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('coleta_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('coleta_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
+                    <a href="{{ path('coleta_edit', { 'id': entity.id }) }}" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil fa-fw"></i></a>
+                    <a href="{{ path('coleta_config', { 'id': entity.id }) }}" data-toggle="tooltip" data-placement="top" title="Configurar"><i class="fa fa-cogs fa-fw"></i></a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-        <ul>
-        <li>
-            <a href="{{ path('coleta_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
     {% endblock %}
