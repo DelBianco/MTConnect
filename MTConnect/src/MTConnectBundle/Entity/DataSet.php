@@ -51,9 +51,9 @@ class DataSet
     private $dataItem;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="timestamp", type="datetime")
+     * @ORM\Column(name="timestamp", type="string", length=255)
      */
     private $timestamp;
 
@@ -124,7 +124,7 @@ class DataSet
     /**
      * Set timestamp
      *
-     * @param \DateTime $timestamp
+     * @param string $timestamp
      * @return DataSet
      */
     public function setTimestamp($timestamp)
@@ -137,7 +137,7 @@ class DataSet
     /**
      * Get timestamp
      *
-     * @return \DateTime 
+     * @return string
      */
     public function getTimestamp()
     {
@@ -184,7 +184,7 @@ class DataSet
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getDataItemName()
     {
@@ -192,7 +192,7 @@ class DataSet
     }
 
     /**
-     * @param mixed $dataItem_name
+     * @param string $dataItem_name
      */
     public function setDataItemName($dataItem_name)
     {

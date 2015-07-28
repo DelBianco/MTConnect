@@ -44,6 +44,14 @@ class DataSetController extends Controller
 
     public function parseXMLAction($coleta_id, Request $request){
 
+        /**
+         * TODO: Dar um jeito de não armazenar dados que não sofreram alterações usar o timestamp para verificar se o dado é novo ou antigo
+         *      isso pode reduzir o tempo de gravação no banco e muito, outra solução é utilizar o sample, porém as sequencias possuem um problema
+         *      se for verificado que uma sequencia é maior que outra não significa necessariamente um dado mais novo, pois quando o agent é reiniciado
+         *      a contagem da sequencia zera. e não faz sentido deixar o agente rodando rumo ao infinito até explodir o valor para a sequencia, sem contar que
+         *      em um ambiente como o laboratório o servidor será reiniciado por diversos motivos.
+         *
+         */
 
         $xmlDoc = new DOMDocument();
         $xmlDoc->load('http://localhost:5000/current');
@@ -56,11 +64,12 @@ class DataSetController extends Controller
         $coleta = $em->getRepository('MTConnectBundle:Coleta')->find($coleta_id);
         $Selected = array();
         parse_str($request->get('selected'), $Selected);
+
         foreach($Selected as $machine => $types){
-            $xmlDoc->load('http://localhost:5000/'.$machine.'/current/');
+            $xmlDoc->load('http://localhost:5000/'.$machine.'/sample/');
             $xpath = new DomXpath($xmlDoc);
             foreach ($xpath->query('//*[@dataItemId]') as $rowNode) {
-                if( array_search( strtoupper($rowNode->nodeName) , $types ) !== false ){
+                if( array_search( strtoupper($rowNode->nodeName) , $types ) !== false ) {
                     $dataSet = new DataSet();
                     $dataSet->setColeta($coleta);
                     /*
@@ -69,12 +78,11 @@ class DataSetController extends Controller
                      */
                     $dataSet->setDataItemName($rowNode->getAttribute('dataItemId'));
                     $dataSet->setSequence($rowNode->getAttribute('sequence'));
-                    $dateTimeFormated = date('Y-m-d\TH:i:sO',strtotime($rowNode->getAttribute('timestamp')));
-                    $dataSet->setTimestamp(new \DateTime($dateTimeFormated));
+                    $dataSet->setTimestamp($rowNode->getAttribute('timestamp'));
                     $dataSet->setValue($rowNode->nodeValue);
                     $em->persist($dataSet);
+                    $em->flush();
                 }
-            $em->flush();
             }
         }
 
@@ -94,6 +102,7 @@ class DataSetController extends Controller
 
         //Alimenta o DataSet Com os respectivos DataItems
         $dataSet = $em->getRepository('MTConnectBundle:DataSet')->findByColeta($coleta_id);
+        $em->getRepository('MTConnectBundle:DataItem')->findAll();
         /**
          * @var $data DataSet
          */

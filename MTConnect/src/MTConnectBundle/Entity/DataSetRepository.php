@@ -35,7 +35,7 @@ class DataSetRepository extends EntityRepository
         return $highest_seq;
     }
 
-    public function findByColeta($coleta){
+    public function findByColetaArray($coleta){
         $em = $this->getEntityManager();
         $result = $em->createQueryBuilder()
             ->select('ds')
@@ -43,7 +43,7 @@ class DataSetRepository extends EntityRepository
             ->where('ds.coleta ='.$coleta)
             ->orderBy('ds.timestamp','DESC')
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
         return $result;
     }
 }

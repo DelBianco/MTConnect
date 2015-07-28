@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-9">
+        <div class="col-xs-12 col-sm-9 container">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Selecione o Tipo de Dado a ser Coletado:
@@ -48,16 +48,27 @@
                     </form>
                 </div>
             </div>
+            <div class="col-xs-12 well">
+                Cuidado ao selecionar todos os dataItems isso pode sobrecarregar o banco de dados fazendo assim com que o ajax que está rodando nessa página demore a responder.
+                Então ao selecionar todos os itens peço que após parar a coleta aguarde de 10 a 20 segundos por máquina selecionada, lembrando que os dados estão sendo coletados na frequência de 1Hz, ou seja, temos um snapshot de todos os dados coletados
+                nessa frequência para alterar o valor da frequência de coleta ulize as opções abaixo, esses valores estão restringidos de acordo com a capacidade de processamento de nosso servidor.
+            </div>
+            <label for="frequency">Frequencia de Coleta:</label>
+            <select id="frequency" class="form-control form-inline">
+                <option value="1000" >1Hz</option>
+                <option value="500">2Hz</option>
+                <option value="667">1.5Hz</option>
+                <option value="2000">0.5Hz</option>
+            </select>
         </div>
     </div>
     <script>
         var lastSeq = '{{ lastSequence }}';
-        var firstSeq = '{{ lastSequence }}';
-        var nextSeq = '{{ lastSequence }}';
+        var firstSeq = '{{ firstSequence }}';
+        var nextSeq = '{{ nextSequence }}';
         var creationTime = '{{ creationTime }}';
         var play;
-        var timer = 500;
-
+        var timer = 1000;
         var mtcPath = 'http://localhost:5000/current'
 
         stop();
@@ -67,7 +78,7 @@
             $("#play").prop( "disabled", true );
             $("#stop").prop( "disabled", false );
             $("#analize").prop( "disabled", true );
-
+            timer = $('#frequency').val();
             play = setInterval(function() { start() }, timer);
 
             // pode ser melhorado passando um sample para ser parseado esse sample tem como controle as sequências
@@ -79,7 +90,10 @@
                             type: "POST",
                             url: "{{ path('dataset_parseXML', { 'coleta_id': coleta.id}) }}",
                             data: {
-                                selected: $('#selectedDataItems').serialize()
+                                firstSeq:   firstSeq,
+                                lastSeq:    lastSeq,
+                                nextSeq:    nextSeq,
+                                selected:   $('#selectedDataItems').serialize()
                             },
                             success: function(result){
                                 res = jQuery.parseJSON(result);

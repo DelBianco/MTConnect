@@ -4,10 +4,37 @@
     <div class="page-header">
         <h1>{{ coleta.nome }} <small><i class="fa fa-bar-chart fa-2x"></i></small></h1>
     </div>
-    <ul>
-    {% for d in data %}
-        <li>{{  d.value }}</li>
-    {% endfor %}
-    </ul>
+    <div class="well">
+        O valor do TimesTamp não representa o momento em que o dado foi coletado mas sim
+    </div>
+    <table id="analiticsTable" class="table table-striped table-bordered" style="width: 100%;">
+    </table>
+    <script>
+        var dataSet = [
+                {% for d in data %}
+                    ['{{ d.dataItemName }}','{{ d.dataItem.type}}','{{ d.timestamp |date('Y/m/d h:i:u')}}','{{ d.value }}' ]
+                    {% if not loop.last %}
+                        ,
+                    {% endif %}
+                {% endfor %}
+                ]
+         ;
+        $(document).ready(function() {
+            $('#analiticsTable').DataTable({
+                "data": dataSet,
+                dom: 'T<"clear">lfrtip',
+                "tableTools": {
+                    "sSwfPath": "{{ asset('swf/copy_csv_xls_pdf.swf') }}"
+                },
+                "columns": [
+                    { "title": "Data Item Name" },
+                    { "title": "Type" },
+                    { "title": "TimeStamp" },
+                    { "title": "Value" }
+                ]
+
+            });
+        } );
+    </script>
 {% endblock %}
 
